@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sable · 内测招募</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","PingFang SC",sans-serif;
+  background:#050505;color:#d0d0d0;line-height:1.7;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#333;border-radius:2px}
+
+/* ── nav ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(5,5,5,.7);border-bottom:1px solid rgba(255,255,255,.04);transition:background .3s}
+.nav-logo{font-size:1.1rem;font-weight:600;letter-spacing:.12em;color:#fff}
+.nav-cta{padding:.45rem 1.2rem;font-size:.78rem;border:1px solid #333;border-radius:20px;color:#aaa;letter-spacing:.04em;transition:all .25s}
+.nav-cta:hover{border-color:#666;color:#fff}
+
+/* ── hero ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative}
+.hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.hero-bg .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.04}
+.orb-1{width:600px;height:600px;background:#fff;top:-20%;left:-10%}
+.orb-2{width:400px;height:400px;background:#888;bottom:-10%;right:-5%}
+.orb-3{width:300px;height:300px;background:#aaa;top:40%;left:60%}
+.hero-content{position:relative;z-index:1;max-width:640px}
+.hero h1{font-size:clamp(3rem,8vw,5.5rem);font-weight:700;letter-spacing:.1em;color:#fff;margin-bottom:.4rem}
+.hero .sub{font-size:1rem;color:#555;letter-spacing:.06em;margin-bottom:2.4rem}
+.hero .desc{font-size:1.05rem;color:#888;line-height:2;margin-bottom:3rem}
+.hero .desc em{font-style:normal;color:#bbb}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 2.6rem;font-size:.9rem;font-weight:500;letter-spacing:.06em;color:#050505;background:#fff;border:none;border-radius:6px;cursor:pointer;transition:all .25s;text-decoration:none}
+.btn-primary:hover{background:#d4d4d4;transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,255,255,.08)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.4rem;padding:.9rem 2.2rem;font-size:.9rem;color:#777;border:1px solid #222;border-radius:6px;transition:all .25s;margin-left:.8rem}
+.btn-ghost:hover{border-color:#444;color:#ccc}
+.hero-buttons{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.6rem}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:#333;font-size:.7rem;letter-spacing:.1em;animation:float 2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ── section ── */
+section{padding:6rem 2rem}
+.section-inner{max-width:960px;margin:0 auto}
+.section-label{font-size:.7rem;letter-spacing:.2em;color:#444;text-transform:uppercase;margin-bottom:.6rem}
+.section-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:600;color:#eee;margin-bottom:1rem}
+.section-desc{font-size:.95rem;color:#666;max-width:520px;line-height:1.8;margin-bottom:3rem}
+
+/* ── features grid ── */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#1a1a1a;border-radius:12px;overflow:hidden;border:1px solid #1a1a1a}
+.feat{background:#0a0a0a;padding:2.2rem 1.8rem;transition:background .3s}
+.feat:hover{background:#111}
+.feat-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;background:#141414;border:1px solid #222;color:#888}
+.feat h3{font-size:.92rem;font-weight:500;color:#ddd;margin-bottom:.5rem}
+.feat p{font-size:.8rem;color:#555;line-height:1.7}
+
+/* ── quick panel demo ── */
+.panel-scene{display:flex;align-items:flex-end;justify-content:center;gap:20px;max-width:480px;margin:0 auto;position:relative;min-height:440px}
+
+.qp-demo{width:100%;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:14px;overflow:hidden;box-shadow:0 16px 60px rgba(0,0,0,.5)}
+.qp-demo-header{padding:10px 14px;border-bottom:1px solid #1a1a1a;font-size:12px;font-weight:700;color:#bbb;display:flex;align-items:center;justify-content:space-between}
+.qp-demo-header span:last-child{font-size:10px;color:#444;font-weight:400}
+.qp-demo-tabs{display:flex;gap:4px;padding:6px 10px;border-bottom:1px solid #141414;background:#0a0a0a}
+.qp-demo-tab{padding:4px 10px;border-radius:6px;font-size:11px;color:#555;background:transparent;border:1px solid transparent;cursor:default;transition:all .2s}
+.qp-demo-tab.active{background:#161616;border-color:#222;color:#ccc;font-weight:600}
+.qp-demo-body{padding:10px}
+
+.qp-demo-cat{border:1px solid #1a1a1a;border-radius:10px;margin-bottom:8px;overflow:hidden;background:#0a0a0a}
+.qp-demo-cat-h{padding:9px 12px;font-size:12px;font-weight:600;background:#111;display:flex;align-items:center;justify-content:space-between;color:#bbb;cursor:default}
+.qp-demo-cat-h svg{color:#444}
+.qp-demo-cat-b{padding:8px}
+
+.qp-demo-row{display:flex;align-items:center;gap:10px;padding:7px 4px}
+.qp-demo-row+.qp-demo-row{border-top:1px solid #111}
+.qp-demo-toggle{width:36px;height:20px;border-radius:10px;background:#222;position:relative;flex-shrink:0;transition:background .3s}
+.qp-demo-toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#555;top:2px;left:2px;transition:all .3s cubic-bezier(.4,.8,.2,1)}
+.qp-demo-toggle.on{background:#fff}
+.qp-demo-toggle.on::after{transform:translateX(16px);background:#0a0a0a}
+.qp-demo-info{flex:1;min-width:0}
+.qp-demo-name{font-size:12px;font-weight:500;color:#ccc}
+.qp-demo-meta{font-size:10px;color:#444;margin-top:1px}
+
+.qp-demo-ball{position:absolute;bottom:16px;right:16px;width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(255,255,255,.1);cursor:default;animation:ballPulse 3s ease-in-out infinite;color:#0a0a0a}
+@keyframes ballPulse{0%,100%{box-shadow:0 4px 20px rgba(255,255,255,.08)}50%{box-shadow:0 4px 30px rgba(255,255,255,.18)}}
+
+.qp-demo-label{position:absolute;bottom:24px;right:76px;font-size:.72rem;color:#444;letter-spacing:.04em;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.qp-demo-label::after{content:'';width:20px;height:1px;background:#333}
+
+/* ── flow ── */
+.flow{display:flex;flex-direction:column;position:relative}
+.flow::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,#1a1a1a 10%,#1a1a1a 90%,transparent)}
+.flow-step{display:flex;gap:2rem;padding:1.6rem 0;position:relative}
+.flow-dot{width:40px;min-width:40px;display:flex;justify-content:center;padding-top:.2rem}
+.flow-dot span{width:9px;height:9px;border-radius:50%;background:#222;border:2px solid #333;position:relative;z-index:1;transition:all .3s}
+.flow-step:hover .flow-dot span{background:#555;border-color:#666}
+.flow-body h3{font-size:.95rem;font-weight:500;color:#ccc;margin-bottom:.3rem}
+.flow-body p{font-size:.82rem;color:#555;line-height:1.7}
+
+/* ── CTA ── */
+.cta-section{text-align:center;padding:8rem 2rem}
+.cta-section h2{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:600;color:#fff;margin-bottom:.8rem}
+.cta-section p{font-size:.9rem;color:#555;margin-bottom:2.4rem}
+.cta-note{margin-top:1.4rem;font-size:.75rem;color:#333}
+
+footer{padding:2rem;text-align:center;font-size:.7rem;color:#222;letter-spacing:.04em;border-top:1px solid #0e0e0e}
+
+/* ── responsive ── */
+@media(max-width:720px){
+  .features-grid{grid-template-columns:1fr}
+  .flow-step{gap:1.2rem}
+  .btn-ghost{margin-left:0}
+  .hero-buttons{flex-direction:column}
+  .nav{padding:1rem 1.2rem}
+  .panel-scene{min-height:380px}
+  .qp-demo-label{display:none}
+}
+@media(min-width:721px) and (max-width:960px){
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-logo">SABLE</div>
+  <a class="nav-cta" href="https://www.wjx.top/vm/mvnsoSf.aspx" target="_blank" rel="noopener">申请内测</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-content">
+    <h1>SABLE</h1>
+    <p class="sub">模块化AI聊天平台</p>
+    <p class="desc">
+      一个集<em>角色商城</em>、<em>对话引擎</em>、<em>插件系统</em>与<em>社区</em>于一体的 AI 聊天平台。<br>
+      现面向早期用户开放内测招募。
+    </p>
+    <div class="hero-buttons">
+      <a class="btn-primary" href="https://www.wjx.top/vm/mvnsoSf.aspx" target="_blank" rel="noopener">
+        填写招募问卷
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+      <a class="btn-ghost" href="#features">了解更多</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <div class="section-inner reveal">
+    <div class="section-label">Features</div>
+    <div class="section-title">你需要的，都在这里</div>
+    <div class="section-desc">从角色扮演到工具调用，从独立创作到社区共享——模块化架构让一切可组合。</div>
+
+    <div class="features-grid">
+      <div class="feat">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9l2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.79 1.1L21 9"/><path d="M12 3v6"/></svg></div>
+        <h3>商城</h3>
+        <p>浏览、购买、发布 AI 预设。支持文本模块、正则处理、美化主题等多种类型，一键挂载到对话。</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg></div>
+        <h3>对话</h3>
+        <p>实时流式输出，提示词组装，支持多模块挂载与条件触发机制。</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3>插件</h3>
+        <p>超高自由度，支持捕获AI消息，注入提示词，持久化对话独立存储。</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3>创作者权益</h3>
+        <p>创作者可选择性展示提示词和代码。提供安全保护，版权属于创作者。</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="11.5" r="2.5"/><circle cx="17" cy="18" r="2.5"/><circle cx="8.5" cy="18" r="2.5"/><circle cx="5" cy="11.5" r="2.5"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></div>
+        <h3>主题美化</h3>
+        <p>主题作为模块按需加载，每个对话可以拥有独立的视觉风格。创作者可发布自定义主题到商城。</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 12h2"/><path d="M2 10h20"/></svg></div>
+        <h3>计费</h3>
+        <p>计费标准透明，可直观查看花费，性价比极高。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick Panel Demo -->
+<section>
+  <div class="section-inner reveal">
+    <div class="section-label">Quick Panel</div>
+    <div class="section-title">悬浮球快捷面板</div>
+    <div class="section-desc">对话中随时唤出快捷面板，一键切换模块开关、管理面具、调整对话参数，无需离开聊天界面。</div>
+
+    <div class="panel-scene">
+      <div class="qp-demo">
+        <div class="qp-demo-header">
+          <span>快捷面板</span>
+          <span>保存 ✕</span>
+        </div>
+        <div class="qp-demo-tabs">
+          <div class="qp-demo-tab active">默认</div>
+          <div class="qp-demo-tab">战斗模式</div>
+          <div class="qp-demo-tab">+</div>
+        </div>
+        <div class="qp-demo-body">
+          <!-- Preset category -->
+          <div class="qp-demo-cat">
+            <div class="qp-demo-cat-h">
+              <span>预设</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="qp-demo-cat-b">
+              <div class="qp-demo-row">
+                <div class="qp-demo-toggle on"></div>
+                <div class="qp-demo-info">
+                  <div class="qp-demo-name">赛博侦探 v2</div>
+                  <div class="qp-demo-meta">预设 · 14 slots</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Text modules -->
+          <div class="qp-demo-cat">
+            <div class="qp-demo-cat-h">
+              <span>文字模块</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="qp-demo-cat-b">
+              <div class="qp-demo-row">
+                <div class="qp-demo-toggle on"></div>
+                <div class="qp-demo-info">
+                  <div class="qp-demo-name">世界观设定</div>
+                  <div class="qp-demo-meta">角色 · 2.1k 字</div>
+                </div>
+              </div>
+              <div class="qp-demo-row">
+                <div class="qp-demo-toggle on"></div>
+                <div class="qp-demo-info">
+                  <div class="qp-demo-name">写作风格指南</div>
+                  <div class="qp-demo-meta">信息 · 860 字</div>
+                </div>
+              </div>
+              <div class="qp-demo-row">
+                <div class="qp-demo-toggle"></div>
+                <div class="qp-demo-info">
+                  <div class="qp-demo-name">战斗系统规则</div>
+                  <div class="qp-demo-meta">信息 · 1.4k 字</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Plugins -->
+          <div class="qp-demo-cat">
+            <div class="qp-demo-cat-h">
+              <span>插件</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+          </div>
+          <!-- Theme -->
+          <div class="qp-demo-cat">
+            <div class="qp-demo-cat-h">
+              <span>美化</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qp-demo-label">点击悬浮球唤出</div>
+      <div class="qp-demo-ball">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flow -->
+<section>
+  <div class="section-inner reveal">
+    <div class="section-label">How it works</div>
+    <div class="section-title">模块化组装，自由定义体验</div>
+    <div class="section-desc">不只是聊天——通过组合不同模块，构建属于你的 AI 交互场景。</div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-dot"><span></span></div>
+        <div class="flow-body">
+          <h3>选择角色预设</h3>
+          <p>从商城浏览社区创作的模块，或从零开始创建。社区提供多个免费模块，定义聊天方式。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"><span></span></div>
+        <div class="flow-body">
+          <h3>挂载功能模块</h3>
+          <p>为对话挂载角色开场白、正则处理、世界书等组件。每个模块独立工作，按需组合，互不干扰。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"><span></span></div>
+        <div class="flow-body">
+          <h3>启用插件扩展</h3>
+          <p>激活社区或自研插件——运行在安全沙盒中，可以注入自定义 UI、处理消息流、或与外部服务交互。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"><span></span></div>
+        <div class="flow-body">
+          <h3>应用视觉主题</h3>
+          <p>为每个对话选择不同的视觉主题，改变界面配色和排版风格。对话氛围，由你决定。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"><span></span></div>
+        <div class="flow-body">
+          <h3>开始对话</h3>
+          <p>一切就绪。流式输出、实时响应，支持重说、续写和 AI 主动回复。你的每一场对话都是独一无二的。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <h2>加入 Sable 内测</h2>
+  <p>我们正在寻找对 AI 交互有想法的早期用户和创作者。</p>
+  <a class="btn-primary" href="https://www.wjx.top/vm/mvnsoSf.aspx" target="_blank" rel="noopener">
+    填写招募问卷
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </a>
+  <p class="cta-note">名额有限 · 通过审核后将收到内测邀请</p>
+</section>
+
+<footer>© 2026 Sable</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
